@@ -1,0 +1,55 @@
+#component-container {
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+#component-header {
+  flex: 0 0;
+}
+
+#component-body {
+  /* height: 100%; */
+  min-height: 0px;
+  flex: 1 1;
+  display: flex;
+  flex-flow: column nowrap;
+}
+/*
+#component-body {
+    flex: 1 1;
+    display: flex;
+    flex-flow: row wrap;
+/*
+    justify-items: flex-start;
+    align-items: flex-start;
+*/
+/*
+}
+*/
+
+#component-footer {
+  flex: 0 0;
+}
+
+#component-form {
+  flex: 0 0;
+  padding: 15px;
+}
+
+#component-map {
+  padding: 10px;
+  flex: 1 0 300px;
+  display: flex;
+}
+
+#map {
+  min-height: 0px;
+  flex: 1 1;
+}
+/*
+#map {
+  width: 100%;
+  flex: 1;
+}
+*/

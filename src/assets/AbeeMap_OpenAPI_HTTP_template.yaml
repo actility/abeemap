@@ -4,20 +4,22 @@ info:
   description: This is the API of the AbeeMap demo application developed for Abeeway tracker devices.
   version: 1.0.0
 servers:
-  - url: 'https://2r7c7pjlmc.execute-api.eu-central-1.amazonaws.com/{basePath}'
+  - url: "{baseUrl}/{basePath}"
     variables:
+      baseUrl:
+        default: "http://127.0.0.1"
       basePath:
-        default: dev
+        default:
 tags:
-- name: 'BLE Beacons'
-  description: 'Operations for managing BLE Beacons'
-- name: 'Device Messages'
-  description: 'Operations for managing Device Messages'
+  - name: "BLE Beacons"
+    description: "Operations for managing BLE Beacons"
+  - name: "Device Messages"
+    description: "Operations for managing Device Messages"
 paths:
   /ble_beacon:
     get:
-      tags: 
-      - 'BLE Beacons'
+      tags:
+        - "BLE Beacons"
       operationId: getBleBeacons
       parameters:
         - name: limit
@@ -30,40 +32,40 @@ paths:
             type: string
             default: 132838
       responses:
-        '200':
+        "200":
           description: 200 response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ArrayOfBleBeacon'
-        '400':
+                $ref: "#/components/schemas/ArrayOfBleBeacon"
+        "400":
           description: 400 response
           content: {}
-        '404':
+        "404":
           description: 404 response
           content: {}
       x-amazon-apigateway-integration:
-        $ref: '#/components/x-amazon-apigateway-integrations/getBleBeacons'
+        $ref: "#/components/x-amazon-apigateway-integrations/getBleBeacons"
     post:
-      tags: 
-      - 'BLE Beacons'
+      tags:
+        - "BLE Beacons"
       operationId: addBleBeacon
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BleBeacon'
+              $ref: "#/components/schemas/BleBeacon"
         required: true
       responses:
-        '405':
+        "405":
           description: 405 response
           content: {}
       x-amazon-apigateway-integration:
-        $ref: '#/components/x-amazon-apigateway-integrations/addBleBeacon'
-  '/ble_beacon/{bssid}':
+        $ref: "#/components/x-amazon-apigateway-integrations/addBleBeacon"
+  "/ble_beacon/{bssid}":
     get:
-      tags: 
-      - 'BLE Beacons'
+      tags:
+        - "BLE Beacons"
       operationId: getBleBeacon
       parameters:
         - name: bssid
@@ -77,23 +79,23 @@ paths:
             type: string
             default: 132838
       responses:
-        '200':
+        "200":
           description: 200 response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BleBeacon'
-        '400':
+                $ref: "#/components/schemas/BleBeacon"
+        "400":
           description: 400 response
           content: {}
-        '404':
+        "404":
           description: 404 response
           content: {}
       x-amazon-apigateway-integration:
-        $ref: '#/components/x-amazon-apigateway-integrations/getBleBeacon'
+        $ref: "#/components/x-amazon-apigateway-integrations/getBleBeacon"
     put:
-      tags: 
-      - 'BLE Beacons'
+      tags:
+        - "BLE Beacons"
       operationId: updateBleBeacon
       parameters:
         - name: bssid
@@ -110,17 +112,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BleBeaconUpdate'
+              $ref: "#/components/schemas/BleBeaconUpdate"
         required: true
       responses:
-        '405':
+        "405":
           description: 405 response
           content: {}
       x-amazon-apigateway-integration:
-        $ref: '#/components/x-amazon-apigateway-integrations/updateBleBeacon'
+        $ref: "#/components/x-amazon-apigateway-integrations/updateBleBeacon"
     delete:
-      tags: 
-      - 'BLE Beacons'
+      tags:
+        - "BLE Beacons"
       operationId: deleteBleBeacon
       parameters:
         - name: bssid
@@ -134,18 +136,18 @@ paths:
             type: string
             default: 132838
       responses:
-        '400':
+        "400":
           description: 400 response
           content: {}
-        '404':
+        "404":
           description: 404 response
           content: {}
       x-amazon-apigateway-integration:
-        $ref: '#/components/x-amazon-apigateway-integrations/deleteBleBeacon'
+        $ref: "#/components/x-amazon-apigateway-integrations/deleteBleBeacon"
   /resolved_messages:
     get:
-      tags: 
-      - 'Device Messages'
+      tags:
+        - "Device Messages"
       operationId: getResolvedMsg
       parameters:
         - name: limit
@@ -158,24 +160,24 @@ paths:
             type: string
             default: 132838
       responses:
-        '200':
+        "200":
           description: 200 response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ArrayOfResolvedMsg'
-        '400':
+                $ref: "#/components/schemas/ArrayOfResolvedMsg"
+        "400":
           description: 400 response
           content: {}
-        '404':
+        "404":
           description: 404 response
           content: {}
       x-amazon-apigateway-integration:
-        $ref: '#/components/x-amazon-apigateway-integrations/getResolvedMsg'
+        $ref: "#/components/x-amazon-apigateway-integrations/getResolvedMsg"
   /decoded_messages:
     get:
-      tags: 
-      - 'Device Messages'
+      tags:
+        - "Device Messages"
       operationId: getDecodedMsg
       parameters:
         - name: limit
@@ -188,37 +190,37 @@ paths:
             type: string
             default: 132838
       responses:
-        '200':
+        "200":
           description: 200 response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ArrayOfDecodedMsg'
-        '400':
+                $ref: "#/components/schemas/ArrayOfDecodedMsg"
+        "400":
           description: 400 response
           content: {}
-        '404':
+        "404":
           description: 404 response
           content: {}
       x-amazon-apigateway-integration:
-        $ref: '#/components/x-amazon-apigateway-integrations/getDecodedMsg'
+        $ref: "#/components/x-amazon-apigateway-integrations/getDecodedMsg"
   /messages:
     post:
-      tags: 
-      - 'Device Messages'
+      tags:
+        - "Device Messages"
       operationId: addMsg
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Msg'
+              $ref: "#/components/schemas/Msg"
         required: true
       responses:
-        '405':
+        "405":
           description: 405 response
           content: {}
       x-amazon-apigateway-integration:
-        $ref: '#/components/x-amazon-apigateway-integrations/addMsg'
+        $ref: "#/components/x-amazon-apigateway-integrations/addMsg"
 components:
   schemas:
     Msg:
@@ -226,18 +228,18 @@ components:
     ArrayOfResolvedMsg:
       type: array
       items:
-        $ref: '#/components/schemas/ResolvedMsg'
+        $ref: "#/components/schemas/ResolvedMsg"
     ArrayOfBleBeacon:
       type: array
       items:
-        $ref: '#/components/schemas/BleBeacon'
+        $ref: "#/components/schemas/BleBeacon"
     Coordinates:
       type: array
       items:
         type: number
       example:
-      - 18.001
-      - 45.001
+        - 18.001
+        - 45.001
     DecodedMsg:
       type: object
     BleBeacon:
@@ -256,18 +258,18 @@ components:
           type: integer
           format: int32
         coordinates:
-          $ref: '#/components/schemas/Coordinates'
+          $ref: "#/components/schemas/Coordinates"
       example:
-        bssid: 'aa:bb:cc:dd:ee:ff'
-        name: 'Test Beacon'
-        customerId: '132838'
+        bssid: "aa:bb:cc:dd:ee:ff"
+        name: "Test Beacon"
+        customerId: "132838"
         coordinates:
-        - 19.111
-        - 45.111
+          - 19.111
+          - 45.111
     ArrayOfDecodedMsg:
       type: array
       items:
-        $ref: '#/components/schemas/DecodedMsg'
+        $ref: "#/components/schemas/DecodedMsg"
     BleBeaconUpdate:
       type: object
       properties:
@@ -275,7 +277,7 @@ components:
           type: string
           description: Updated name of the bleBeacon
         coordinates:
-          $ref: '#/components/schemas/Coordinates'
+          $ref: "#/components/schemas/Coordinates"
     ResolvedMsg:
       type: object
 
@@ -330,12 +332,12 @@ components:
       connectionType: "INTERNET"
 x-amazon-apigateway-cors:
   allowMethods:
-  - "*"
+    - "*"
   allowHeaders:
-  - "authorization"
-  - "content-type"
+    - "authorization"
+    - "content-type"
   maxAge: 0
   allowCredentials: false
   allowOrigins:
-  - "*"
+    - "*"
 x-amazon-apigateway-importexport-version: "1.0"

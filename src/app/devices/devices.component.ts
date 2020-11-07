@@ -5,10 +5,9 @@ import { DxCoreApiService } from '../dx-core-api.service';
 @Component({
   selector: 'app-devices',
   templateUrl: './devices.component.html',
-  styleUrls: ['./devices.component.css']
+  styleUrls: ['./devices.component.css'],
 })
 export class DevicesComponent implements OnInit {
-
   isLoading = true;
   elements = [];
 
@@ -17,10 +16,7 @@ export class DevicesComponent implements OnInit {
   elementIdPropertyName = 'ref';
   displayedColumns: string[] = ['EUI', 'name'];
 
-
-  constructor(
-    private dxCoreApiService: DxCoreApiService
-  ) { }
+  constructor(private dxCoreApiService: DxCoreApiService) {}
 
   ngOnInit(): void {
     this.get();
@@ -42,7 +38,7 @@ export class DevicesComponent implements OnInit {
     );
   }
 
-/*
+  /*
   getGateways(): void {
     // this.isLoading = true;
     this.dxCoreApiService.getGatewayFeatures().subscribe(
@@ -59,5 +55,4 @@ export class DevicesComponent implements OnInit {
     );
   }
 */
-
 }

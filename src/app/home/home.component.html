@@ -1,69 +1,92 @@
 <div id="component-container">
+  <div id="component-header">
+    <h2>{{ componentTitle }}</h2>
+  </div>
 
-    <div id="component-header">
-      <h2>{{componentTitle}}</h2>
-    </div>
-    
-    <div id="component-body" class="mat-elevation-z8">
+  <div id="component-body" class="mat-elevation-z8">
+    <p>
+      Beyond the functions demonstrated by this application you can manage your
+      IoT things by the following tools too:
+    </p>
 
-        <p>
-            Beyond the functions demonstrated by this application you can manage your IoT things by the following tools too: 
-        </p>
+    <ul>
+      <li>
+        <a href="https://community.thingpark.io/tpe/" target="_blank"
+          >ThingPark Enterprise Network Server</a
+        >
+        (Manages LoRaWAN Connectivity)
+      </li>
+      <li>
+        <a
+          href="https://dev1.thingpark.com/thingpark/abeewayDeviceAnalyzer/index.php?dxprofile=community"
+          target="_blank"
+          >Abeeway Device Analyser</a
+        >
+        (Helps you to test and configure your trackers.)
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <a
+          href="https://dx-api-dev1.thingpark.com/getstarted/#/"
+          target="_blank"
+          >ThingPark Enterprise API</a
+        >
+        (Swagger UI)
+      </li>
+      <li>
+        <a
+          href="https://community.thingpark.io/iot-flow/v1/swagger-ui.html"
+          target="_blank"
+          >ThingPark IoT-Flow API</a
+        >
+        (Swagger UI)
+      </li>
+      <li>
+        <a
+          href="https://petstore.swagger.io/?url=https://s3.eu-central-1.amazonaws.com/abeemap.thingpark.io/AbeeMap_OpenAPI_HTTP_template.yaml"
+          target="_blank"
+          >AbeeMap AWS API</a
+        >
+        (Swagger UI)
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <a href="https://github.com/norbertherbert/abeemap" target="_blank"
+          >AbeeMap Angular App on Github</a
+        >
+      </li>
+    </ul>
 
-        <ul>
-            <li><a 
-                href="https://community.thingpark.io/tpe/" 
-                target="_blank"
-            >ThingPark Enterprise Network Server</a> (Manages LoRaWAN Connectivity)</li>
-            <li><a 
-                href="https://dev1.thingpark.com/thingpark/abeewayDeviceAnalyzer/index.php?dxprofile=community" 
-                target="_blank"
-            >Abeeway Device Analyser</a> (Helps you to test and configure your trackers.)</li>
-        </ul>
-        <ul>
-            <li><a 
-                href="https://dx-api-dev1.thingpark.com/getstarted/#/" 
-                target="_blank"
-            >ThingPark Enterprise API</a> (Swagger UI)</li>
-            <li><a 
-                href="https://community.thingpark.io/iot-flow/v1/swagger-ui.html" 
-                target="_blank"
-            >ThingPark IoT-Flow API</a> (Swagger UI)</li>
-            <li><a 
-                href="https://petstore.swagger.io/?url=https://s3.eu-central-1.amazonaws.com/abeemap.thingpark.io/AbeeMap_OpenAPI_HTTP_template.yaml"
-                target="_blank"
-            >AbeeMap AWS API</a> (Swagger UI)</li>
-        </ul>
-        <ul>
-            <li><a 
-                href="https://github.com/norbertherbert/abeemap" 
-                target="_blank"
-            >AbeeMap Angular App on Github</a></li>
-        </ul>
+    <p>
+      <b>AbeeMap</b> is an application that demonstrates the integration of
+      several systems powered by Amazon and Actility. The whole ecosystem is
+      presented by the following diagram:
+    </p>
+    <img
+      src="assets/architecture_2.png"
+      style="max-width: 800px; width: 100%"
+    />
+    <p>The list of utilized components are as follows:</p>
+    <ul>
+      <li>ThingPark Enterprise network server</li>
+      <li>ThingPark X Location Engine location solver</li>
+      <li>ThingPark X IoT-Flow connectivity middleware</li>
+      <li>AWS IoT Core</li>
+      <li>AWS Lamda Functions</li>
+      <li>AWS DynamoDB</li>
+      <li>AWS API Gateway</li>
+    </ul>
 
-        <p>
-            <b>AbeeMap</b> is an application that demonstrates the integration of several systems powered by 
-            Amazon and Actility. The whole ecosystem is presented by the following diagram:
-        </p>
-         <img src="assets/architecture_2.png" style="max-width:800px;width:100%">
-         <p>The list of utilized components are as follows:</p>
-         <ul>
-             <li>ThingPark Enterprise network server</li>
-             <li>ThingPark X Location Engine location solver</li>
-             <li>ThingPark X IoT-Flow connectivity middleware</li>
-             <li>AWS IoT Core</li>
-             <li>AWS Lamda Functions</li>
-             <li>AWS DynamoDB</li>
-             <li>AWS API Gateway</li>
-         </ul>
- 
-         <p>
-            <b>ThingPark Location</b> is a network infrastructure powered by Actility for supporting multi-technology 
-            geo-location services. The infrastructure is presented by the following diagram:
-        </p>
-         <img src="assets/architecture_1.png" style="max-width:800px;width:100%">
-
-
-    </div>
-    
- </div>
+    <p>
+      <b>ThingPark Location</b> is a network infrastructure powered by Actility
+      for supporting multi-technology geo-location services. The infrastructure
+      is presented by the following diagram:
+    </p>
+    <img
+      src="assets/architecture_1.png"
+      style="max-width: 800px; width: 100%"
+    />
+  </div>
+</div>

@@ -1,0 +1,55 @@
+#component-container {
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+#component-header {
+    flex: 0 0;
+}
+
+#component-body {
+
+    /* height: 100%; */
+    min-height: 0px;
+    flex: 1 1;
+
+    display: flex;
+    flex-flow: column nowrap;
+
+}
+
+#map {
+    min-height: 0px;
+    flex: 1 1;
+}
+
+#map-footer {
+
+    flex: 0 0;
+    position: absolute;
+    margin: 0px;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: left; /* space-around; */
+
+    bottom: 10px;
+    left: 10px;
+    padding: 5px;
+    flex-flow: column nowrap;
+}
+#map-footer-legends {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: left;
+}
+
+#marker-text-overlay {
+    background-color: white; 
+    border-radius: 10px; 
+    border: 1px solid black; 
+    padding: 5px 10px;
+}
+
+

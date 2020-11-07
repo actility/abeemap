@@ -1,0 +1,30 @@
+<div id="component-container">
+
+<div id="component-header">
+  <h2>Edit Floorplan</h2>
+
+  <button mat-icon-button color="primary" (click)="goBack()">
+    <mat-icon matTooltip="Go back">arrow_back</mat-icon>
+  </button>
+  <button mat-icon-button color="primary" (click)="save()">
+    <mat-icon matTooltip="Save Floorplan">save</mat-icon>
+  </button>
+
+</div>
+
+<div id="component-body" class="main-map-container mat-elevation-z8">
+
+  <div id="map"></div>
+
+  <div id="map-footer">
+    <button mat-icon-button color="primary" (click)="goBack()">
+      <mat-icon matTooltip="Go back">arrow_back</mat-icon>
+    </button>
+    <button mat-icon-button color="primary" (click)="save()">
+      <mat-icon matTooltip="Floorplan">save</mat-icon>
+    </button>
+  </div>
+
+</div>
+
+</div>

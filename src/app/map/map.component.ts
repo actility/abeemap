@@ -29,6 +29,18 @@ const blueCircleStroke       = [0x46, 0x86, 0xc6, 0.3]; // #4686c6
 const grayCircleBackground   = [0x94, 0x94, 0x94, 0.4]; // #949494
 const grayCircleStroke       = [0x6a, 0x6a, 0x6a, 0.3]; // #6a6a6a
 
+
+const FLOORPLAN_STYLE = new Style({
+  stroke: new Stroke({
+    color: 'blue',
+    lineDash: [4],
+    width: 3,
+  }),
+  fill: new Fill({
+    color: 'rgba(0, 0, 255, 0.1)',
+  }),
+});
+
 const GATEWAY_STYLE = new Style({
   image: new Icon( {
       anchor: [0.5, 0.5],
@@ -115,6 +127,26 @@ export class MapComponent implements OnInit {
   });
   floorplanImageLayer = new ImageLayer({
     source: this.floorplanImageStaticSource,
+    zIndex: 20,
+  });
+
+  floorplanVectorSource = new VectorSource({
+    format: new GeoJSON(),
+    loader: (extent, resolution, projection) => {
+      this.awsApiService.getFloorplan('default').subscribe( (floorplan) => {
+        this.floorplanVectorSource.addFeatures(
+          this.floorplanVectorSource.getFormat().readFeatures(
+            floorplan[0].geojson,
+            { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' }
+          ) as Feature<Geometry>[]
+        );
+      });
+    },
+    // features: new GeoJSON().readFeatures(floorplanGeoJSON, {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'}),
+  });
+  floorplanVectorLayer = new VectorLayer({
+    source: this.floorplanVectorSource,
+    style: FLOORPLAN_STYLE,
     zIndex: 20,
   });
 
@@ -301,6 +333,9 @@ export class MapComponent implements OnInit {
           layers: [
             this.mapTileLayer,
             this.floorplanImageLayer,
+
+            this.floorplanVectorLayer,
+
             this.markersVectorLayer,
             this.circlesVectorLayer,
             this.linesVectorLayer,

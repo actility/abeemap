@@ -1,6 +1,10 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import {
+  HttpClientModule,
+  HTTP_INTERCEPTORS,
+  HttpClient,
+} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 
@@ -15,6 +19,7 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { AlertDialogComponent } from './dialogs/alert-dialog/alert-dialog.component';
 import { DeviceComponent } from './device/device.component';
 import { DevicesComponent } from './devices/devices.component';
+import { FloorplanComponent } from './floorplan/floorplan.component';
 import { BleBeaconComponent } from './ble-beacon/ble-beacon.component';
 import { BleBeaconsComponent } from './ble-beacons/ble-beacons.component';
 import { MapComponent } from './map/map.component';
@@ -32,15 +37,18 @@ import { AuthInterceptor } from './auth/auth.interceptor';
 import { DxAdminApiService } from './dx-admin-api.service';
 import { HomeComponent } from './home/home.component';
 
-
 import { of, Observable, ObservableInput } from '../../node_modules/rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { ConfigService } from './config.service';
 
-function loadConfig(httpClient: HttpClient, configService: ConfigService): (() => Promise<boolean>) {
+function loadConfig(
+  httpClient: HttpClient,
+  configService: ConfigService
+): () => Promise<boolean> {
   return (): Promise<boolean> => {
     return new Promise<boolean>((resolve: (a: boolean) => void): void => {
-      httpClient.get('assets/config.json')
+      httpClient
+        .get('assets/config.json')
         .pipe(
           map((x: ConfigService) => {
             configService.AWS_API_URL = x.AWS_API_URL;
@@ -54,11 +62,17 @@ function loadConfig(httpClient: HttpClient, configService: ConfigService): (() =
 
             resolve(true);
           }),
-          catchError( (err: { status: number }, caught: Observable<void>): ObservableInput<{}> => {
-            resolve(false);
-            return of({});
-          })
-        ).subscribe();
+          catchError(
+            (
+              err: { status: number },
+              caught: Observable<void>
+            ): ObservableInput<{}> => {
+              resolve(false);
+              return of({});
+            }
+          )
+        )
+        .subscribe();
     });
   };
 }
@@ -70,6 +84,7 @@ function loadConfig(httpClient: HttpClient, configService: ConfigService): (() =
     AlertDialogComponent,
     DeviceComponent,
     DevicesComponent,
+    FloorplanComponent,
     BleBeaconComponent,
     BleBeaconsComponent,
     MapComponent,
@@ -80,7 +95,7 @@ function loadConfig(httpClient: HttpClient, configService: ConfigService): (() =
     CodecToolComponent,
     UserComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -97,21 +112,14 @@ function loadConfig(httpClient: HttpClient, configService: ConfigService): (() =
     {
       provide: APP_INITIALIZER,
       useFactory: loadConfig,
-      deps: [
-        HttpClient,
-        ConfigService
-      ],
-      multi: true
+      deps: [HttpClient, ConfigService],
+      multi: true,
     },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     DxAdminApiService,
     AuthService,
   ],
-  entryComponents: [
-    AlertDialogComponent,
-  ],
-  bootstrap: [
-    AppComponent,
-  ]
+  entryComponents: [AlertDialogComponent],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

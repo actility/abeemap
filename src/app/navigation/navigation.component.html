@@ -19,12 +19,13 @@
   <div *ngIf="!(isHandset$ | async)" class="menu-items-parent">
 
     <div class="menu-items-left">
-      <a mat-button [routerLink]="['/home']" routerLinkActive="active-link-header">Home</a>
-      <a mat-button [routerLink]="['/devices']" routerLinkActive="active-link-header">Devices</a>
-      <a mat-button [routerLink]="['/ble-beacons']" routerLinkActive="active-link-header">Ble Beacons</a>
       <a mat-button [routerLink]="['/map']" routerLinkActive="active-link-header">Map</a>
       <a mat-button [routerLink]="['/resolved-messages']" routerLinkActive="active-link-header">Resolved Logs</a>
       <a mat-button [routerLink]="['/decoded-messages']" routerLinkActive="active-link-header">Decoded Logs</a>
+      <a mat-button [routerLink]="['/devices']" routerLinkActive="active-link-header">Devices</a>
+      <a mat-button [routerLink]="['/floorplan']" routerLinkActive="active-link-header">Floorplan</a>
+      <a mat-button [routerLink]="['/ble-beacons']" routerLinkActive="active-link-header">BLE Beacons</a>
+      <a mat-button [routerLink]="['/home']" routerLinkActive="active-link-header">Resources</a>
     </div>
 
     <div class="menu-items-right">
@@ -74,12 +75,13 @@
     <mat-nav-list>
 
       <!-- <app-sidenav-list (sidenavClose)="sidenav.close()"></app-sidenav-list> -->
-      <a mat-menu-item routerLink="/home" routerLinkActive="active-link-side" (click)="sidenavClose(sidenav)">Home</a>
-      <a mat-menu-item routerLink="/devices" routerLinkActive="active-link-side" (click)="sidenavClose(sidenav)">Devices</a>
-      <a mat-menu-item routerLink="/ble-beacons" routerLinkActive="active-link-side" (click)="sidenavClose(sidenav)">Ble Beacons</a>
       <a mat-menu-item routerLink="/map" routerLinkActive="active-link-side" (click)="sidenavClose(sidenav)">Map</a>
       <a mat-menu-item routerLink="/resolved-messages" routerLinkActive="active-link-side" (click)="sidenavClose(sidenav)">Resolved Logs</a>
       <a mat-menu-item routerLink="/decoded-messages" routerLinkActive="active-link-side" (click)="sidenavClose(sidenav)">Decoded Logs</a>
+      <a mat-menu-item routerLink="/devices" routerLinkActive="active-link-side" (click)="sidenavClose(sidenav)">Devices</a>
+      <a mat-menu-item routerLink="/floorplan" routerLinkActive="active-link-side" (click)="sidenavClose(sidenav)">Floorplan</a>
+      <a mat-menu-item routerLink="/ble-beacons" routerLinkActive="active-link-side" (click)="sidenavClose(sidenav)">BLE Beacons</a>
+      <a mat-menu-item routerLink="/home" routerLinkActive="active-link-side" (click)="sidenavClose(sidenav)">Resources</a>
       <!-- <a mat-menu-item routerLink="/codec-tool" routerLinkActive="active-link-side" (click)="sidenavClose(sidenav)">CoDec Tool</a> -->
       <!-- <a mat-menu-item routerLink="/settings" routerLinkActive="active-link-side" (click)="sidenavClose(sidenav)">Settings</a> -->
       <!-- <a mat-menu-item routerLink="/user" routerLinkActive="active-link-side" (click)="sidenavClose(sidenav)">User</a> -->

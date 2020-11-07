@@ -1,0 +1,50 @@
+<div id="component-container">
+
+  <div id="component-header">
+
+    <h2>Edit Floorplan</h2>
+
+    <button mat-icon-button color="primary" (click)="goBack()">
+      <mat-icon matTooltip="Go back">arrow_back</mat-icon>
+    </button>
+    <button mat-icon-button color="primary" (click)="save()">
+      <mat-icon matTooltip="Save Floorplan">save</mat-icon>
+    </button>
+
+  </div>
+
+  <div id="component-body" class="mat-elevation-z8">
+      
+    <div id="component-form">
+        <mat-form-field floatLabel="always"  >
+          <mat-label>floorplanId:</mat-label>
+          <input matInput [(ngModel)]="floorplan.floorplanId" type="text" id="floorplanId" readonly/>
+        </mat-form-field>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-form-field floatLabel="always"  >
+          <mat-label>name:</mat-label>
+          <input matInput [(ngModel)]="floorplan.name" type="text" id="name" />
+        </mat-form-field>
+        <br />
+        <mat-form-field floatLabel="always"  >
+          <mat-label>geojson:</mat-label>
+          <input matInput [(ngModel)]="floorplan.geojson" type="text" id="geojson"  (change)="updateFloorplan()" />
+        </mat-form-field>
+    </div>
+
+    <div id="component-map">
+      <div id="map"></div>
+    </div>
+
+  </div>
+
+  <div id="component-footer">
+    <button mat-icon-button color="primary" (click)="goBack()">
+      <mat-icon matTooltip="Go back">arrow_back</mat-icon>
+    </button>
+    <button mat-icon-button color="primary" (click)="save()">
+      <mat-icon matTooltip="Floorplan">save</mat-icon>
+    </button>
+  </div>
+
+</div>

@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { UserComponent } from './user/user.component';
 import { DevicesComponent } from './devices/devices.component';
 import { DeviceComponent } from './device/device.component';
+import { FloorplanComponent } from './floorplan/floorplan.component';
 import { BleBeaconsComponent } from './ble-beacons/ble-beacons.component';
 import { BleBeaconComponent } from './ble-beacon/ble-beacon.component';
 import { DecodedMessagesComponent } from './decoded-messages/decoded-messages.component';
@@ -21,13 +22,13 @@ const routes: Routes = [
 
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'map',
     pathMatch: 'full',
     canActivate: [ AuthGuard ],
   },
   {
     path: '#',
-    redirectTo: 'home',
+    redirectTo: 'map',
     pathMatch: 'full',
     canActivate: [ AuthGuard ],
   },
@@ -62,6 +63,11 @@ const routes: Routes = [
   {
     path: 'ble-beacons/:bssid',
     component: BleBeaconComponent,
+    canActivate: [ AuthGuard ],
+  },
+  {
+    path: 'floorplan',
+    component: FloorplanComponent,
     canActivate: [ AuthGuard ],
   },
 

@@ -1,42 +1,40 @@
 {
+  "OAUTH2": {
+    "__api_url": "https://nano-things.net/abeemap-api/v100/api",
+    "__sso_api_url": "https://nano-things.net/sso-api/v100/api",
 
-    "OAUTH2": {
-        "__api_url": "https://nano-things.net/abeemap-api/v100/api",
-        "__sso_api_url": "https://nano-things.net/sso-api/v100/api",
+    "__authorizationUrl": "https://nano-things.net/abeemap/login",
+    "authorizationUrl": "/login",
 
-        "__authorizationUrl": "https://nano-things.net/abeemap/login",
-        "authorizationUrl": "/login",
+    "response_type": "token",
 
-        "response_type": "token",
+    "__redirect_uri": "https://nano-things.net/abeemap",
+    "redirect_uri": "/",
 
-        "__redirect_uri": "https://nano-things.net/abeemap",
-        "redirect_uri": "/",
+    "client_id": "abeemap",
+    "scope": "sso_user abeemap_user"
+  },
 
-        "client_id": "abeemap",
-        "scope": "sso_user abeemap_user"
-    },
+  "DXAPI_URLS": {
+    "poc-api": "https://dx-api-dev1.thingpark.com",
+    "dev1-api": "https://dx-api-dev1.thingpark.com",
+    "tpe-eu-preprod-api": "https://dx-api-dev1.thingpark.com",
+    "iot-api": "https://dx-api.thingpark.com",
+    "tpe-eu-api": "https://dx-api.thingpark.com",
+    "community-api": "https://dx-api-dev1.thingpark.com"
+  },
+  "DXAPI_DEFAULT_PREFIX": "iot-api",
 
-    "DXAPI_URLS": {
-        "poc-api":             "https://dx-api-dev1.thingpark.com",
-        "dev1-api":            "https://dx-api-dev1.thingpark.com",
-        "tpe-eu-preprod-api":  "https://dx-api-dev1.thingpark.com",
-        "iot-api":             "https://dx-api.thingpark.com",
-        "tpe-eu-api":          "https://dx-api.thingpark.com",
-        "community-api":       "https://dx-api-dev1.thingpark.com"
-    },
-    "DXAPI_DEFAULT_PREFIX": "iot-api",
+  "AWS_API_URL": "https://2r7c7pjlmc.execute-api.eu-central-1.amazonaws.com/api",
 
-    "__AWS_API_URL": "https://2r7c7pjlmc.execute-api.eu-central-1.amazonaws.com/api",
+  "FLOORPLAN_PATH": "assets/floorplans/fp01a.png",
+  "FLOORPLAN_EXT": {
+    "south": 46.227131,
+    "north": 46.225231,
+    "west": 18.440839,
+    "east": 18.444639
+  },
 
-    "FLOORPLAN_PATH": "assets/floorplans/fp01a.png",
-    "FLOORPLAN_EXT": {
-        "south": 46.227131,
-        "north": 46.225231,
-        "west": 18.440839,
-        "east": 18.444639
-    },
-
-    "DEFAULT_MAP_CENTER": [11.6739826, 47.0622886],
-    "DEFAULT_MAP_ZOOM": 5
-
+  "DEFAULT_MAP_CENTER": [11.6739826, 47.0622886],
+  "DEFAULT_MAP_ZOOM": 5
 }

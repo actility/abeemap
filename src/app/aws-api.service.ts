@@ -5,7 +5,6 @@ import { Observable , of, throwError, } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { MatSnackBar} from '@angular/material/snack-bar';
 
-// import { CONFIG } from '../environments/environment';
 import { ConfigService } from './config.service';
 
 import { AuthService } from './auth/auth.service';
@@ -42,7 +41,6 @@ export class AwsApiService {
     if (limit) { p = p.set('limit', limit); }
 
     return this.http.get<any>(
-      // (CONFIG.AWS_API_URL) + '/resolved_messages',
       this.awsApiUrl + '/resolved_messages',
       { params: p, headers: HEADERS }
     )
@@ -61,7 +59,6 @@ export class AwsApiService {
     if (limit) { p = p.set('limit', limit); }
 
     return this.http.get<any>(
-      // (CONFIG.AWS_API_URL) + '/decoded_messages',
       this.awsApiUrl + '/decoded_messages',
       { params: p, headers: HEADERS }
     )
@@ -90,7 +87,6 @@ export class AwsApiService {
   getBleBeacons() {
 
     return this.http.get<any>(
-      // CONFIG.AWS_API_URL + '/ble_beacon',
       this.awsApiUrl + '/ble_beacon',
       { headers: HEADERS }
     )
@@ -131,7 +127,6 @@ export class AwsApiService {
   getBleBeacon(bssid: string) {
 
     return this.http.get<any>(
-      // CONFIG.AWS_API_URL + '/ble_beacon/' + bssid,
       this.awsApiUrl + '/ble_beacon/' + bssid,
       { headers: HEADERS }
     )
@@ -145,7 +140,6 @@ export class AwsApiService {
   createBleBeacon(bleBeacon: any) {
 
     return this.http.post<any>(
-      // CONFIG.AWS_API_URL + '/ble_beacon',
       this.awsApiUrl + '/ble_beacon',
       bleBeacon,
       { headers: HEADERS }
@@ -159,7 +153,6 @@ export class AwsApiService {
   updateBleBeacon(bssid: string, bleBeacon: any) {
 
     return this.http.put<any>(
-      // CONFIG.AWS_API_URL + '/ble_beacon/' + bssid,
       this.awsApiUrl + '/ble_beacon/' + bssid,
       bleBeacon,
       { headers: HEADERS }
@@ -173,12 +166,24 @@ export class AwsApiService {
   deleteBleBeacon(bssid: string) {
 
     return this.http.delete<any>(
-      // CONFIG.AWS_API_URL + '/ble_beacon/' + bssid
       this.awsApiUrl + '/ble_beacon/' + bssid
     )
       .pipe(
         tap(_ => this.log(`Beacon has been deleted`)),
         catchError(this.handleError<any>('deleteBleBeacon'))
+      );
+  }
+
+  getFloorplan(floorplanId) {
+    return this.http.get<any>(
+      this.awsApiUrl + '/floorplan/' + floorplanId,
+      // '../assets/floorplans/floorplan_01.geojson',
+      { headers: HEADERS }
+    )
+      .pipe(
+        // map( (body) => body[0].geojson ),
+        tap(_ => this.log(`Floorplan has been retreived`)),
+        catchError(this.handleError<any>('getFloorplan'))
       );
   }
 
