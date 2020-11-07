@@ -28,7 +28,15 @@
         <br />
         <mat-form-field floatLabel="always"  >
           <mat-label>geojson:</mat-label>
-          <input matInput [(ngModel)]="floorplan.geojson" type="text" id="geojson"  (change)="updateFloorplan()" />
+          <textarea 
+            matInput 
+            [(ngModel)]="floorplan.geojson" 
+            type="text" 
+            id="geojson"
+            (change)="updateFloorplan()"
+            rows="10"
+            cols="30"
+          ></textarea>
         </mat-form-field>
     </div>
 

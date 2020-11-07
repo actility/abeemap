@@ -53,3 +53,8 @@
   flex: 1;
 }
 */
+
+#geojson {
+  min-width: 400px !important;
+  height: 300px !important;
+}
