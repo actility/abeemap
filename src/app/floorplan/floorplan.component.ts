@@ -1,20 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Map, View, Feature } from 'ol';
+import { Map, View } from 'ol';
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
-import { fromLonLat, transform, transformExtent } from 'ol/proj';
 import { OSM as OSMSource, Vector as VectorSource } from 'ol/source';
 import { Style, Stroke, Fill } from 'ol/style';
 import { GeoJSON } from 'ol/format';
-import { Point, Geometry, LineString } from 'ol/geom';
 
 import { Location } from '@angular/common';
 
-// import { MatSnackBar} from '@angular/material';
+import { MatSnackBar} from '@angular/material/snack-bar';
 
 import { AwsApiService } from '../aws-api.service';
-
-import { CONFIG } from '../../environments/environment';
 
 
 const FLOORPLAN_STYLE = new Style({
@@ -53,7 +49,7 @@ export class FloorplanComponent implements OnInit {
     // private route: ActivatedRoute,
     private location: Location,
     private awsApiService: AwsApiService,
-    // private snackBar: MatSnackBar,
+    private snackBar: MatSnackBar,
   ) { }
 
   ngOnInit() {
@@ -99,7 +95,24 @@ export class FloorplanComponent implements OnInit {
   }
 
   updateFloorplan(): void {
-
+    try {
+      const newFloorplanFeatures = new GeoJSON().readFeatures(
+        this.floorplan.geojson,
+        { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' }
+      );
+      this.floorplanVectorSource.clear();
+      this.floorplanVectorSource.addFeatures( newFloorplanFeatures );
+      this.mapView.fit(
+        this.floorplanVectorSource.getFeatures()[0].getGeometry(),
+        {
+          padding: [100, 100, 100, 100]
+        }
+      );
+      this.reportSuccess('The GeoJSON definition has been updated!');
+    }
+    catch (err) {
+      this.reportError('Invalid GeoJSON text.');
+    }
   }
 
   get(): void {
@@ -117,13 +130,11 @@ export class FloorplanComponent implements OnInit {
 
   save(): void {
 
-    const floorplanUpdateFields: any = {
-      name: this.floorplan.name,
-      geojson: this.floorplan.geojson
-    };
-
-/*
-    this.awsApiService.updateFloorplan(DEFAULT_FLOORPLAN_ID, floorplanUpdateFields).subscribe(
+    this.awsApiService.updateFloorplan(
+      DEFAULT_FLOORPLAN_ID,
+      this.floorplan.name,
+      this.floorplan.geojson
+    ).subscribe(
       (data) => {
         // this.reportSuccess(data.message.message);
         // this.goBack();
@@ -132,7 +143,6 @@ export class FloorplanComponent implements OnInit {
         // this.reportError(error.error.message.message);
       }
     );
-*/
 
   }
 
@@ -141,7 +151,6 @@ export class FloorplanComponent implements OnInit {
   }
 
 
-/*
   private reportError(message: string): void {
     if (message) {
       this.snackBar.open(message, 'close', {
@@ -156,6 +165,5 @@ export class FloorplanComponent implements OnInit {
       duration: 2000,
     });
   }
-*/
 
 }

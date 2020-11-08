@@ -187,6 +187,19 @@ export class AwsApiService {
       );
   }
 
+  updateFloorplan(floorplanId: string, name: string, geojson: any) {
+
+    return this.http.put<any>(
+      this.awsApiUrl + '/floorplan/' + floorplanId,
+      { name, geojson },
+      { headers: HEADERS }
+    )
+      .pipe(
+        tap(_ => this.log(`Floorplan has been modified`)),
+        catchError(this.handleError<any>('updateFloorplan'))
+      );
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
 
 

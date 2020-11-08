@@ -4,6 +4,12 @@
 
     <h2>Edit Floorplan</h2>
 
+    <p>
+      You can create floorplans in GeoJSON format at 
+      <a href="https://geojson.io" target="_blank"> https://geojson.io</a>. 
+      Please copy the generated JSON text in the <i>geojson</i> fileld below.
+    </p>
+
     <button mat-icon-button color="primary" (click)="goBack()">
       <mat-icon matTooltip="Go back">arrow_back</mat-icon>
     </button>
@@ -16,28 +22,27 @@
   <div id="component-body" class="mat-elevation-z8">
       
     <div id="component-form">
+      <div style="display:flex; flex-flow: row wrap">
         <mat-form-field floatLabel="always"  >
           <mat-label>floorplanId:</mat-label>
           <input matInput [(ngModel)]="floorplan.floorplanId" type="text" id="floorplanId" readonly/>
         </mat-form-field>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <mat-form-field floatLabel="always"  >
+        <mat-form-field floatLabel="always" style="flex:1;">
           <mat-label>name:</mat-label>
           <input matInput [(ngModel)]="floorplan.name" type="text" id="name" />
         </mat-form-field>
-        <br />
-        <mat-form-field floatLabel="always"  >
-          <mat-label>geojson:</mat-label>
-          <textarea 
-            matInput 
-            [(ngModel)]="floorplan.geojson" 
-            type="text" 
-            id="geojson"
-            (change)="updateFloorplan()"
-            rows="10"
-            cols="30"
-          ></textarea>
-        </mat-form-field>
+      </div>
+      <mat-form-field floatLabel="always"  >
+        <mat-label>geojson:</mat-label>
+        <textarea 
+          matInput 
+          [(ngModel)]="floorplan.geojson" 
+          type="text" 
+          id="geojson"
+          (change)="updateFloorplan()"
+        ></textarea>
+      </mat-form-field>
     </div>
 
     <div id="component-map">
