@@ -36,7 +36,7 @@ export class FloorplanComponent implements OnInit {
   dismissibleAlert = true;
 
   map: any;
-  floorplan: any;
+  floorplan = { floorplanId: '', name: '', geojson: '' };
 
   mapView: any;
   mapTileLayer: any;
@@ -50,7 +50,9 @@ export class FloorplanComponent implements OnInit {
     private location: Location,
     private awsApiService: AwsApiService,
     private snackBar: MatSnackBar,
-  ) { }
+  ) {
+    // this.get();
+  }
 
   ngOnInit() {
     this.get();
@@ -65,9 +67,24 @@ export class FloorplanComponent implements OnInit {
     });
 
     /* FLOORPLAN LAYER */
+    /*
     this.floorplanVectorSource = new VectorSource({
       features: new GeoJSON().readFeatures(this.floorplan.geojson, {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'}),
     });
+    */
+
+    let feature: any;
+    try {
+      feature = new GeoJSON().readFeatures(this.floorplan.geojson, {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+    }
+    catch (err) {
+      this.floorplan.geojson = '{ "type": "FeatureCollection", "features": [] }';
+      feature = new GeoJSON().readFeatures(this.floorplan.geojson, {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+    }
+
+    this.floorplanVectorSource = new VectorSource();
+    this.floorplanVectorSource.addFeatures( feature );
+
     this.floorplanVectorLayer = new VectorLayer({
       source: this.floorplanVectorSource,
       style: FLOORPLAN_STYLE,
@@ -76,12 +93,15 @@ export class FloorplanComponent implements OnInit {
 
     /* MAP VIEW */
     this.mapView = new View();
-    this.mapView.fit(
-      this.floorplanVectorSource.getFeatures()[0].getGeometry(),
-      {
-        padding: [10, 10, 10, 10]
-      }
-    );
+    try {
+      this.mapView.fit(
+        this.floorplanVectorSource.getFeatures()[0].getGeometry(),
+        {
+          padding: [10, 10, 10, 10]
+        }
+      );
+    }
+    catch (err) {}
 
     /* FLOORPLAN LAYER */
     this.map = new Map({
@@ -95,6 +115,31 @@ export class FloorplanComponent implements OnInit {
   }
 
   updateFloorplan(): void {
+
+    let features: any;
+    try {
+      features = new GeoJSON().readFeatures(this.floorplan.geojson, {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+      this.reportSuccess('The GeoJSON definition has been updated!');
+    }
+    catch (err) {
+      this.reportError('Invalid GeoJSON text.');
+      this.floorplan.geojson = '{ "type": "FeatureCollection", "features": [] }';
+      features = new GeoJSON().readFeatures(this.floorplan.geojson, {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+    }
+
+    this.floorplanVectorSource.clear();
+    this.floorplanVectorSource.addFeatures( features );
+    try {
+      this.mapView.fit(
+        this.floorplanVectorSource.getFeatures()[0].getGeometry(),
+        {
+          padding: [100, 100, 100, 100]
+        }
+      );
+    }
+    catch (err) { }
+
+/*
     try {
       const newFloorplanFeatures = new GeoJSON().readFeatures(
         this.floorplan.geojson,
@@ -113,6 +158,8 @@ export class FloorplanComponent implements OnInit {
     catch (err) {
       this.reportError('Invalid GeoJSON text.');
     }
+*/
+
   }
 
   get(): void {

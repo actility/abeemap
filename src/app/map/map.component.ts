@@ -93,6 +93,7 @@ export class MapComponent implements OnInit {
 
   showGateways = true;
   showBeacons = true;
+  showFloorplan = true;
   showMarkers = true;
   showCircles = true;
   showLines = true;
@@ -115,6 +116,7 @@ export class MapComponent implements OnInit {
   });
 
   /* FLOORPLAN LAYER */
+  /*
   floorplanImageStaticSource = new ImageStaticSource({
     url: this.configService.FLOORPLAN_PATH,
     imageExtent: transformExtent(
@@ -129,6 +131,7 @@ export class MapComponent implements OnInit {
     source: this.floorplanImageStaticSource,
     zIndex: 20,
   });
+  */
 
   floorplanVectorSource = new VectorSource({
     format: new GeoJSON(),
@@ -332,7 +335,7 @@ export class MapComponent implements OnInit {
           target: 'map',
           layers: [
             this.mapTileLayer,
-            this.floorplanImageLayer,
+            // this.floorplanImageLayer,
 
             this.floorplanVectorLayer,
 
@@ -474,6 +477,14 @@ export class MapComponent implements OnInit {
       this.map.addLayer(this.beaconsVectorLayer);
     } else {
       this.map.removeLayer(this.beaconsVectorLayer);
+    }
+  }
+
+  updateFloorplan() {
+    if (this.showFloorplan) {
+      this.map.addLayer(this.floorplanVectorLayer);
+    } else {
+      this.map.removeLayer(this.floorplanVectorLayer);
     }
   }
 
