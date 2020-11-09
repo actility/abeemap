@@ -25,7 +25,7 @@
   },
   "DXAPI_DEFAULT_PREFIX": "iot-api",
 
-  "AWS_API_URL": "https://2r7c7pjlmc.execute-api.eu-central-1.amazonaws.com/api",
+  "__AWS_API_URL": "https://2r7c7pjlmc.execute-api.eu-central-1.amazonaws.com/api",
 
   "FLOORPLAN_PATH": "assets/floorplans/fp01a.png",
   "FLOORPLAN_EXT": {
