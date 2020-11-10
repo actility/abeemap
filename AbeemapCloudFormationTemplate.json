@@ -541,15 +541,7 @@
                 "Name": "Abeemap",
                 "CredentialsArn": { "Fn::GetAtt" : ["AbeeMapAPIGW2LambdaRole", "Arn"] },
                 "Target": "http://abeemap.s3-website.eu-central-1.amazonaws.com/",
-                "ProtocolType": "HTTP",
-                "CorsConfiguration": {
-                    "AllowCredentials" : true,
-                    "AllowHeaders" : [ "*" ],
-                    "AllowMethods" : [ "*" ],
-                    "AllowOrigins" : [ "*" ],
-                    "ExposeHeaders" : [ "*" ],
-                    "MaxAge" : 600
-                }
+                "ProtocolType": "HTTP"
             }
         },
         "RouteAddMsg": {

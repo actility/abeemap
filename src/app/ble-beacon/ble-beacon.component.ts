@@ -230,7 +230,7 @@ export class BleBeaconComponent implements OnInit {
         this.floorplan = data[0];
         this.updateFloorplanOnMap();
 
-        this.zoomToFloorplan();
+        // this.zoomToFloorplan();
 
         this.getBeacon();
 

@@ -25,7 +25,7 @@
   },
   "DXAPI_DEFAULT_PREFIX": "iot-api",
 
-  "__AWS_API_URL": "https://ya1qbc0ntg.execute-api.eu-west-2.amazonaws.com/api",
+  "AWS_API_URL": "https://0di916f339.execute-api.eu-west-2.amazonaws.com/api",
 
   "DEFAULT_MAP_CENTER": [11.6739826, 47.0622886],
   "DEFAULT_MAP_ZOOM": 5
