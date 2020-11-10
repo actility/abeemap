@@ -858,7 +858,7 @@
             "Properties": {
                 "FunctionName": {
                     "Fn::GetAtt": [
-                        "AbeeMap_addMsg",
+                        "LDFaddMsg",
                         "Arn"
                     ]
                 },
