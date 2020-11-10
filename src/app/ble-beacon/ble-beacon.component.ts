@@ -4,9 +4,9 @@ import { Component, OnInit } from '@angular/core';
 
 import { Map, View, Overlay, Feature } from 'ol';
 import { Tile as TileLayer, Vector as VectorLayer, Image as ImageLayer } from 'ol/layer';
-import { fromLonLat, transform, transformExtent } from 'ol/proj';
+import { toLonLat, fromLonLat, transform, transformExtent } from 'ol/proj';
 import { OSM as OSMSource, Vector as VectorSource, ImageStatic as ImageStaticSource } from 'ol/source';
-import { Style, Icon } from 'ol/style';
+import { Style, Icon, Stroke, Fill } from 'ol/style';
 import { GeoJSON } from 'ol/format';
 import { Point, Geometry, LineString } from 'ol/geom';
 
@@ -20,7 +20,8 @@ import { Location } from '@angular/common';
 import { BleBeacon } from '../bleBeacon';
 import { AwsApiService } from '../aws-api.service';
 
-import { CONFIG } from '../../environments/environment';
+// import { CONFIG } from '../../environments/environment';
+import { ConfigService } from '../config.service';
 
 
 const BEACON_STYLE = new Style({
@@ -32,6 +33,18 @@ const BEACON_STYLE = new Style({
   })
 });
 
+const FLOORPLAN_STYLE = new Style({
+  stroke: new Stroke({
+    color: 'blue',
+    lineDash: [4],
+    width: 3,
+  }),
+  fill: new Fill({
+    color: 'rgba(0, 0, 255, 0.1)',
+  }),
+});
+
+const DEFAULT_FLOORPLAN_ID = 'default';
 
 @Component({
   selector: 'app-ble-beacon',
@@ -40,88 +53,87 @@ const BEACON_STYLE = new Style({
 })
 export class BleBeaconComponent implements OnInit {
 
+  mapView: any;
+  mapTileLayer: any;
+  floorplanVectorSource: any;
+  floorplanVectorLayer: any;
+  floorplan: any;
+  beaconFeature: any;
+  beaconVectorSource: any;
+  beaconVectorLayer: any;
+  beaconModify: any;
   bleBeacon: BleBeacon;
+  map: any;
+
   formTypeIsCreate = false;
 
   dismissibleAlert = true;
-
-  map: any;
-
-  /* MAP VIEW */
-  mapView = new View({
-    center: fromLonLat(CONFIG.DEFAULT_MAP_CENTER),
-    zoom: CONFIG.DEFAULT_MAP_ZOOM,
-  });
-
-  /* MAP LAYER */
-  mapTileLayer = new TileLayer({
-    source: new OSMSource(),
-    zIndex: 10,
-  });
-
-  /* BEACON LAYER */
-  beaconFeature = new Feature(
-    new Point(fromLonLat(CONFIG.DEFAULT_MAP_CENTER))
-  );
-  beaconVectorSource = new VectorSource({
-    features: [this.beaconFeature]
-  });
-  beaconVectorLayer = new VectorLayer({
-      source: this.beaconVectorSource,
-      style: BEACON_STYLE,
-      zIndex: 30
-  });
-  beaconModify = new Modify({
-    source: this.beaconVectorSource
-  });
-
-  /* FLOORPLAN LAYER */
-  floorplanImageStaticSource = new ImageStaticSource({
-    url: CONFIG.FLOORPLAN_PATH,
-    imageExtent: transformExtent(
-      [
-        CONFIG.FLOORPLAN_EXT.east, CONFIG.FLOORPLAN_EXT.north, CONFIG.FLOORPLAN_EXT.west, CONFIG.FLOORPLAN_EXT.south
-      ],
-      'EPSG:4326', 'EPSG:3857'
-    )
-  });
-  floorplanImageLayer = new ImageLayer({
-    source: this.floorplanImageStaticSource,
-    zIndex: 20,
-  });
 
   constructor(
     private route: ActivatedRoute,
     private location: Location,
     private awsApiService: AwsApiService,
+    private configService: ConfigService,
     // private snackBar: MatSnackBar,
   ) { }
 
   ngOnInit() {
+
     this.initMap();
     const bssid = this.route.snapshot.paramMap.get('bssid');
     if (bssid === 'create') {
       this.formTypeIsCreate = true;
-      this.bleBeacon = {
-        bssid: '',
-        name: '',
-        coordinates: CONFIG.FLOORPLAN_COORDINATES,
-      };
-      this.updatePositionOnMap();
-      this.mapView.setCenter(fromLonLat(this.bleBeacon.coordinates));
-      this.mapView.setZoom(17);
+      this.getFloorplanThenBeacon();
     } else {
       this.formTypeIsCreate = false;
-      this.get();
+      this.getFloorplanThenBeacon();
     }
   }
 
   initMap() {
+
+    /* MAP VIEW */
+    this.mapView = new View({
+      center: fromLonLat(this.configService.DEFAULT_MAP_CENTER),
+      zoom: this.configService.DEFAULT_MAP_ZOOM,
+    });
+
+    /* MAP LAYER */
+    this.mapTileLayer = new TileLayer({
+      source: new OSMSource(),
+      zIndex: 10,
+    });
+
+    /* BEACON LAYER */
+    this.beaconFeature = new Feature(
+      new Point(fromLonLat(this.configService.DEFAULT_MAP_CENTER))
+    );
+    this.beaconVectorSource = new VectorSource({
+      features: [this.beaconFeature]
+    });
+    this.beaconVectorLayer = new VectorLayer({
+        source: this.beaconVectorSource,
+        style: BEACON_STYLE,
+        zIndex: 30
+    });
+
+    this.beaconModify = new Modify({
+      source: this.beaconVectorSource
+    });
+
+    /* FLOORPLAN LAYER */
+    this.floorplanVectorSource = new VectorSource();
+    this.floorplanVectorLayer = new VectorLayer({
+      source: this.floorplanVectorSource,
+      style: FLOORPLAN_STYLE,
+      zIndex: 20,
+    });
+
     this.map = new Map({
         target: 'map',
         layers: [
           this.mapTileLayer,
-          this.floorplanImageLayer,
+          this.floorplanVectorLayer,
           this.beaconVectorLayer,
         ],
         view: this.mapView,
@@ -136,24 +148,43 @@ export class BleBeaconComponent implements OnInit {
     });
   }
 
-  updatePositionOnMap() {
+  getDefaultBeacon(): void {
+  }
+
+  getBeacon(): void {
+
+    if (this.formTypeIsCreate) {
+      this.zoomToFloorplan();
+      this.bleBeacon = {
+        bssid: '',
+        name: '',
+        coordinates: toLonLat(this.mapView.getCenter()),
+      };
+      this.updateBeaconPositionOnMap();
+    } else {
+      const bssid = this.route.snapshot.paramMap.get('bssid');
+      this.awsApiService.getBleBeacon(bssid).subscribe(
+        (data: BleBeacon) => {
+          this.bleBeacon = data;
+          this.updateBeaconPositionOnMap();
+          this.zoomToBeacon();
+          // this.reportSuccess(data.message.message);
+        },
+        (error) => {
+          // this.reportError(error.error.message.message);
+        }
+      );
+    }
+
+  }
+
+  updateBeaconPositionOnMap(): void {
     this.beaconFeature.getGeometry().setCoordinates(fromLonLat(this.bleBeacon.coordinates));
   }
 
-  get(): void {
-    const bssid = this.route.snapshot.paramMap.get('bssid');
-    this.awsApiService.getBleBeacon(bssid).subscribe(
-      (data: BleBeacon) => {
-        this.bleBeacon = data;
-        // this.reportSuccess(data.message.message);
-        this.updatePositionOnMap();
-        this.mapView.setCenter(fromLonLat(this.bleBeacon.coordinates));
-        this.mapView.setZoom(17);
-      },
-      (error) => {
-        // this.reportError(error.error.message.message);
-      }
-    );
+  zoomToBeacon(): void {
+    this.mapView.setCenter(fromLonLat(this.bleBeacon.coordinates));
+    this.mapView.setZoom(this.configService.DEFAULT_MAP_ZOOM);
   }
 
   create(): void {
@@ -191,6 +222,54 @@ export class BleBeaconComponent implements OnInit {
       }
     );
 
+  }
+
+  getFloorplanThenBeacon(): void {
+    this.awsApiService.getFloorplan(DEFAULT_FLOORPLAN_ID).subscribe(
+      (data: any) => {
+        this.floorplan = data[0];
+        this.updateFloorplanOnMap();
+
+        this.zoomToFloorplan();
+
+        this.getBeacon();
+
+        // this.reportSuccess(data.message.message);
+      },
+      (error) => {
+        // this.reportError(error.error.message.message);
+      }
+    );
+  }
+
+  updateFloorplanOnMap(): void {
+
+    let features: any;
+    try {
+      features = new GeoJSON().readFeatures(this.floorplan.geojson, {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+      // this.reportSuccess('The GeoJSON definition has been updated!');
+    }
+    catch (err) {
+      // this.reportError('Invalid GeoJSON text.');
+      this.floorplan.geojson = '{ "type": "FeatureCollection", "features": [] }';
+      features = new GeoJSON().readFeatures(this.floorplan.geojson, {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+    }
+
+    this.floorplanVectorSource.clear();
+    this.floorplanVectorSource.addFeatures( features );
+
+  }
+
+  zoomToFloorplan(): void {
+    try {
+      this.mapView.fit(
+        this.floorplanVectorSource.getFeatures()[0].getGeometry(),
+        {
+          padding: [100, 100, 100, 100]
+        }
+      );
+    }
+    catch (err) { }
   }
 
   goBack(): void {

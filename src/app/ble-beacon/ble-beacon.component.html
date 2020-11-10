@@ -36,13 +36,13 @@
       <p>
         <mat-form-field floatLabel="always"  >
           <mat-label>longitude:</mat-label>
-          <input matInput [(ngModel)]="bleBeacon.coordinates[0]" type="text" id="positionLon"  (change)="updatePositionOnMap()" />
+          <input matInput [(ngModel)]="bleBeacon.coordinates[0]" type="text" id="positionLon"  (change)="updateBeaconPositionOnMap()" />
         </mat-form-field>
       </p>
       <p>
         <mat-form-field floatLabel="always"  >
           <mat-label>latitude:</mat-label>
-          <input matInput [(ngModel)]="bleBeacon.coordinates[1]" type="text" id="coordinatesLat" (change)="updatePositionOnMap()" />
+          <input matInput [(ngModel)]="bleBeacon.coordinates[1]" type="text" id="coordinatesLat" (change)="updateBeaconPositionOnMap()" />
         </mat-form-field>
       </p>
 

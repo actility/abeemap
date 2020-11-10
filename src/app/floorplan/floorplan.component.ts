@@ -139,27 +139,6 @@ export class FloorplanComponent implements OnInit {
     }
     catch (err) { }
 
-/*
-    try {
-      const newFloorplanFeatures = new GeoJSON().readFeatures(
-        this.floorplan.geojson,
-        { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' }
-      );
-      this.floorplanVectorSource.clear();
-      this.floorplanVectorSource.addFeatures( newFloorplanFeatures );
-      this.mapView.fit(
-        this.floorplanVectorSource.getFeatures()[0].getGeometry(),
-        {
-          padding: [100, 100, 100, 100]
-        }
-      );
-      this.reportSuccess('The GeoJSON definition has been updated!');
-    }
-    catch (err) {
-      this.reportError('Invalid GeoJSON text.');
-    }
-*/
-
   }
 
   get(): void {

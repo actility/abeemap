@@ -25,15 +25,7 @@
   },
   "DXAPI_DEFAULT_PREFIX": "iot-api",
 
-  "__AWS_API_URL": "https://2r7c7pjlmc.execute-api.eu-central-1.amazonaws.com/api",
-
-  "FLOORPLAN_PATH": "assets/floorplans/fp01a.png",
-  "FLOORPLAN_EXT": {
-    "south": 46.227131,
-    "north": 46.225231,
-    "west": 18.440839,
-    "east": 18.444639
-  },
+  "AWS_API_URL": "https://ya1qbc0ntg.execute-api.eu-west-2.amazonaws.com/api",
 
   "DEFAULT_MAP_CENTER": [11.6739826, 47.0622886],
   "DEFAULT_MAP_ZOOM": 5

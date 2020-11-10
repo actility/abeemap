@@ -56,8 +56,6 @@ function loadConfig(
             configService.DXAPI_DEFAULT_PREFIX = x.DXAPI_DEFAULT_PREFIX;
             configService.DEFAULT_MAP_CENTER = x.DEFAULT_MAP_CENTER;
             configService.DEFAULT_MAP_ZOOM = x.DEFAULT_MAP_ZOOM;
-            configService.FLOORPLAN_PATH = x.FLOORPLAN_PATH;
-            configService.FLOORPLAN_EXT = x.FLOORPLAN_EXT;
             configService.OAUTH2 = x.OAUTH2;
 
             resolve(true);
