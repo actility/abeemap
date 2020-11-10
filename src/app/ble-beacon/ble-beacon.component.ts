@@ -184,7 +184,7 @@ export class BleBeaconComponent implements OnInit {
 
   zoomToBeacon(): void {
     this.mapView.setCenter(fromLonLat(this.bleBeacon.coordinates));
-    this.mapView.setZoom(this.configService.DEFAULT_MAP_ZOOM);
+    this.mapView.setZoom(17);
   }
 
   create(): void {
