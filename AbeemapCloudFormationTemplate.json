@@ -182,6 +182,43 @@
                 }
             }
         },
+
+
+
+
+        "DDBTfloorplans": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+                "TableName": "AbeeMap_floorplans",
+                "AttributeDefinitions": [
+                    {
+                        "AttributeName": "floorplanId",
+                        "AttributeType": "S"
+                    },
+                    {
+                        "AttributeName": "customerId",
+                        "AttributeType": "S"
+                    }
+                ],
+                "KeySchema": [
+                    {
+                        "AttributeName": "floorplanId",
+                        "KeyType": "HASH"
+                    },
+                    {
+                        "AttributeName": "customerId",
+                        "KeyType": "RANGE"
+                    }
+                ],
+                "ProvisionedThroughput": {
+                    "ReadCapacityUnits": 5,
+                    "WriteCapacityUnits": 5
+                }
+            }
+        },
+
+
+
         "LDFaddMsg": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
@@ -360,7 +397,7 @@
             "Type": "AWS::Lambda::Function",
             "Properties": {
                 "FunctionName": "AbeeMap_getBleBeacons",
-                "Description": "Add a new message to DB",
+                "Description": "Get NLE Beacons from DB",
                 "Runtime": "nodejs10.x",
                 "Role": {
                     "Fn::GetAtt": [
@@ -414,6 +451,70 @@
                 }
             }
         },
+
+
+
+        "LDFgetFloorplan": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "FunctionName": "AbeeMap_getFloorplan",
+                "Description": "Get a floorplan from DB",
+                "Runtime": "nodejs10.x",
+                "Role": {
+                    "Fn::GetAtt": [
+                        "AbeeMapLambda2DynamoRole",
+                        "Arn"
+                    ]
+                },
+                "Handler": "index.handler",
+                "Code": {
+                    "S3Bucket": {
+                        "Fn::Join": [
+                            "-",
+                            [
+                                "geoloc",
+                                {
+                                    "Ref": "AWS::Region"
+                                }
+                            ]
+                        ]
+                    },
+                    "S3Key": "getFloorplan.zip"
+                }
+            }
+        },
+        "LDFupdateFloorplan": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "FunctionName": "AbeeMap_updateFloorplan",
+                "Description": "Update a floorplan in the DB",
+                "Runtime": "nodejs10.x",
+                "Role": {
+                    "Fn::GetAtt": [
+                        "AbeeMapLambda2DynamoRole",
+                        "Arn"
+                    ]
+                },
+                "Handler": "index.handler",
+                "Code": {
+                    "S3Bucket": {
+                        "Fn::Join": [
+                            "-",
+                            [
+                                "geoloc",
+                                {
+                                    "Ref": "AWS::Region"
+                                }
+                            ]
+                        ]
+                    },
+                    "S3Key": "updateFloorplan.zip"
+                }
+            }
+        },
+
+
+
         "IOTtopicRule": {
             "Type": "AWS::IoT::TopicRule",
             "Properties": {
@@ -440,7 +541,15 @@
                 "Name": "Abeemap",
                 "CredentialsArn": { "Fn::GetAtt" : ["AbeeMapAPIGW2LambdaRole", "Arn"] },
                 "Target": "http://abeemap.s3-website.eu-central-1.amazonaws.com/",
-                "ProtocolType": "HTTP"
+                "ProtocolType": "HTTP",
+                "CorsConfiguration": {
+                    "AllowCredentials" : true,
+                    "AllowHeaders" : [ "*" ],
+                    "AllowMethods" : [ "*" ],
+                    "AllowOrigins" : [ "*" ],
+                    "ExposeHeaders" : [ "*" ],
+                    "MaxAge" : 600
+                }
             }
         },
         "RouteAddMsg": {
@@ -561,7 +670,7 @@
             "Type": "AWS::ApiGatewayV2::Route",
             "Properties": {
                 "ApiId": { "Ref": "APIGWabeemapAPI" },
-                "RouteKey": "GET /api/ble_beacons",
+                "RouteKey": "GET /api/ble_beacon",
                 "Target": { "Fn::Join": [ "/", [ "integrations", { "Ref": "RouteGetBleBeaconsIntegration" } ] ] }
             }
         },
@@ -595,6 +704,51 @@
                 "PayloadFormatVersion": "1.0"
             }
         },
+
+
+
+
+        "RouteGetFloorplan": {
+            "Type": "AWS::ApiGatewayV2::Route",
+            "Properties": {
+                "ApiId": { "Ref": "APIGWabeemapAPI" },
+                "RouteKey": "GET /api/floorplan/{floorplanId}",
+                "Target": { "Fn::Join": [ "/", [ "integrations", { "Ref": "RouteGetFloorplanIntegration" } ] ] }
+            }
+        },
+        "RouteGetFloorplanIntegration": {
+            "Type": "AWS::ApiGatewayV2::Integration",
+            "Properties": {
+                "ApiId": { "Ref": "APIGWabeemapAPI" },
+                "IntegrationType": "AWS_PROXY",
+                "IntegrationUri": { "Fn::Join": [ "", [ "arn:aws:apigateway:", { "Ref": "AWS::Region" }, ":lambda:path/2015-03-31/functions/", { "Fn::GetAtt" : ["LDFgetFloorplan", "Arn"] }, "/invocations" ] ] },
+                "IntegrationMethod": "POST",
+                "CredentialsArn": { "Fn::GetAtt" : ["AbeeMapAPIGW2LambdaRole", "Arn"] },
+                "PayloadFormatVersion": "1.0"
+            }
+        },
+        "RouteUpdateFloorplan": {
+            "Type": "AWS::ApiGatewayV2::Route",
+            "Properties": {
+                "ApiId": { "Ref": "APIGWabeemapAPI" },
+                "RouteKey": "PUT /api/floorplan/{floorplanId}",
+                "Target": { "Fn::Join": [ "/", [ "integrations", { "Ref": "RouteUpdateFloorplanIntegration" } ] ] }
+            }
+        },
+        "RouteUpdateFloorplanIntegration": {
+            "Type": "AWS::ApiGatewayV2::Integration",
+            "Properties": {
+                "ApiId": { "Ref": "APIGWabeemapAPI" },
+                "IntegrationType": "AWS_PROXY",
+                "IntegrationUri": { "Fn::Join": [ "", [ "arn:aws:apigateway:", { "Ref": "AWS::Region" }, ":lambda:path/2015-03-31/functions/", { "Fn::GetAtt" : ["LDFupdateFloorplan", "Arn"] }, "/invocations" ] ] },
+                "IntegrationMethod": "POST",
+                "CredentialsArn": { "Fn::GetAtt" : ["AbeeMapAPIGW2LambdaRole", "Arn"] },
+                "PayloadFormatVersion": "1.0"
+            }
+        },
+
+
+
         "AbeeMapLambda2DynamoRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
@@ -633,9 +787,10 @@
                                         "dynamodb:DeleteItem"
                                     ],
                                     "Resource": [
-                                        { "Fn::GetAtt": ["DDBTresolvedMsg", "Arn"] },
-                                        { "Fn::GetAtt": ["DDBTdecodedMsg", "Arn"] },
-                                        { "Fn::GetAtt": ["DDBTbleBeacons", "Arn"] }
+                                        { "Fn::Join": [ "", [ { "Fn::GetAtt": ["DDBTresolvedMsg", "Arn"] }, "*" ] ] },
+                                        { "Fn::Join": [ "", [ { "Fn::GetAtt": ["DDBTdecodedMsg", "Arn"]  }, "*" ] ] },
+                                        { "Fn::Join": [ "", [ { "Fn::GetAtt": ["DDBTbleBeacons", "Arn"]  }, "*" ] ] },
+                                        { "Fn::Join": [ "", [ { "Fn::GetAtt": ["DDBTfloorplans", "Arn"]  }, "*" ] ] }
                                     ]
                                 }
                             ]
@@ -677,7 +832,9 @@
                                         { "Fn::GetAtt": [ "LDFdeleteBleBeacon", "Arn"] },
                                         { "Fn::GetAtt": [ "LDFgetBleBeacon", "Arn"] },
                                         { "Fn::GetAtt": [ "LDFgetBleBeacons", "Arn"] },
-                                        { "Fn::GetAtt": [ "LDFupdateBleBeacon", "Arn"] }
+                                        { "Fn::GetAtt": [ "LDFupdateBleBeacon", "Arn"] },
+                                        { "Fn::GetAtt": [ "LDFgetFloorplan", "Arn"] },
+                                        { "Fn::GetAtt": [ "LDFupdateFloorplan", "Arn"] }
                                     ]
                                 }
                             ]
@@ -693,6 +850,22 @@
                             "Action": ["sts:AssumeRole"]
                         }
                     ]
+                }
+            }
+        },
+        "iotCorePermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+                "FunctionName": {
+                    "Fn::GetAtt": [
+                        "AbeeMap_addMsg",
+                        "Arn"
+                    ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "iot.amazonaws.com",
+                "SourceAccount": {
+                    "Ref": "AWS::AccountId"
                 }
             }
         }
