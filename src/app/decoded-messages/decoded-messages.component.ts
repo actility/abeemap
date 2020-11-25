@@ -99,4 +99,24 @@ export class DecodedMessagesComponent implements OnInit {
     return d1.toISOString().slice(0, 19).replace('T', ' ');
   }
 
+  formatBssids(element) {
+
+    const bssids = element._bleBssids || element._wifiBssids;
+    if ( !bssids ) { return ''; }
+
+    let bssidsString = '';
+    for (const bssid of bssids) {
+      bssidsString += bssid.bssid.replace(/\:/g, '') + ':' + bssid.rssi + 'dBm ';
+    }
+    return bssidsString;
+  }
+
+  formatMode(element) {
+    let mode = '';
+    try {
+      mode = element._deviceConfiguration.mode;
+    } catch (err) { }
+    return mode;
+  }
+
 }

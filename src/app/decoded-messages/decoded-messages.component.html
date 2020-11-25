@@ -82,13 +82,15 @@
         <!-- Temperature Column -->
         <ng-container matColumnDef="_temperature">
           <th mat-header-cell *matHeaderCellDef> Temp [C] </th>
-          <td mat-cell *matCellDef="let element"> {{element._temperature}} </td>
+          <!-- <td mat-cell *matCellDef="let element"> {{element._temperature}} </td> -->
+          <td mat-cell *matCellDef="let element"> {{element._temperatureMeasure}} </td>
         </ng-container>
 
         <!-- Tracking Mode Column -->
         <ng-container matColumnDef="_mode">
           <th mat-header-cell *matHeaderCellDef> Tracking Mode </th>
-          <td mat-cell *matCellDef="let element"> {{element._mode}} </td>
+          <td mat-cell *matCellDef="let element"> {{formatMode(element)}} </td>
+          <!-- <td mat-cell *matCellDef="let element"> {{element._mode}} </td> -->
         </ng-container>
 
         <!-- Message Type Column -->
@@ -106,13 +108,15 @@
         <!-- Position Type Column -->
         <ng-container matColumnDef="_fixType">
           <th mat-header-cell *matHeaderCellDef> Position Type </th>
-          <td mat-cell *matCellDef="let element"> {{element._fixType}} </td>
+          <!-- <td mat-cell *matCellDef="let element"> {{element._fixType}} </td> -->
+          <td mat-cell *matCellDef="let element"> {{element._rawPositionType}} </td>
         </ng-container>
 
         <!-- BSSIDs -->
         <ng-container matColumnDef="_bssids">
           <th mat-header-cell *matHeaderCellDef> BSSIDs </th>
-          <td mat-cell *matCellDef="let element"> {{element._bssids}} </td>
+          <!-- <td mat-cell *matCellDef="let element"> {{element._bssids}} </td> -->
+          <td mat-cell *matCellDef="let element"> {{formatBssids(element)}} </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
